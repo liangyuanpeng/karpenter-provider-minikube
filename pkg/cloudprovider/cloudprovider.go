@@ -8,22 +8,8 @@ import (
 	"k8s.io/apimachinery/pkg/runtime/schema"
 	"sigs.k8s.io/controller-runtime/pkg/client"
 
-	"sigs.k8s.io/karpenter-provider-cluster-api/pkg/providers/machine"
-	"sigs.k8s.io/karpenter-provider-cluster-api/pkg/providers/machinedeployment"
 	v1 "sigs.k8s.io/karpenter/pkg/apis/v1"
 	"sigs.k8s.io/karpenter/pkg/cloudprovider"
-)
-
-const (
-	// TODO (elmiko) if we make these exposed constants from the CAS we can import them instead of redifining and risking drift
-	cpuKey          = "capacity.cluster-autoscaler.kubernetes.io/cpu"
-	memoryKey       = "capacity.cluster-autoscaler.kubernetes.io/memory"
-	gpuCountKey     = "capacity.cluster-autoscaler.kubernetes.io/gpu-count"
-	gpuTypeKey      = "capacity.cluster-autoscaler.kubernetes.io/gpu-type"
-	diskCapacityKey = "capacity.cluster-autoscaler.kubernetes.io/ephemeral-disk"
-	labelsKey       = "capacity.cluster-autoscaler.kubernetes.io/labels"
-	taintsKey       = "capacity.cluster-autoscaler.kubernetes.io/taints"
-	maxPodsKey      = "capacity.cluster-autoscaler.kubernetes.io/maxPods"
 )
 
 func NewCloudProvider(ctx context.Context, kubeClient client.Client) *CloudProvider {
@@ -40,10 +26,8 @@ type ClusterAPIInstanceType struct {
 }
 
 type CloudProvider struct {
-	kubeClient                client.Client
-	accessLock                sync.Mutex
-	machineProvider           machine.Provider
-	machineDeploymentProvider machinedeployment.Provider
+	kubeClient client.Client
+	accessLock sync.Mutex
 }
 
 func (c *CloudProvider) Create(ctx context.Context, nodeClaim *v1.NodeClaim) (*v1.NodeClaim, error) {
