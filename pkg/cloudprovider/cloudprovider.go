@@ -69,5 +69,5 @@ func (c *CloudProvider) List(ctx context.Context) ([]*v1.NodeClaim, error) {
 }
 
 func (c *CloudProvider) Name() string {
-	return "clusterapi"
+	return "minikube"
 }
